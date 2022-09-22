@@ -5,6 +5,8 @@ function firstClick(event, i, j) {
     timeInterval = setInterval(countUp, 1000)
     addBombs(gBoard, i, j)
     renderBoard(gBoard)
+    //for dark mode
+    _adjustCellColorCells()
     setMinesNegsCount(gBoard)
     gGame.isOn = true
     gGame.noClicks = false

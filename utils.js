@@ -144,11 +144,16 @@ function getClassName(location) {
 function toggleLightMode(element) {
     isDarkMode = !isDarkMode
     var index = isDarkMode * 1
-    console.log(colorScheme[isDarkMode * 1].emoji);
     element.innerText = colorScheme[index].emoji
     document.querySelector('body').style.backgroundColor = colorScheme[index].body
     document.querySelector('body').style.color = colorScheme[index].color
+    _adjustCellColorCells()
+}
+
+function _adjustCellColorCells() {
+    console.log("cells color");
     var elCells = document.querySelectorAll('.cell')
+    var index = isDarkMode * 1
     for (let i = 0; i < elCells.length; i++) {
         elCells[i].style.backgroundColor = colorScheme[index].cell
     }
