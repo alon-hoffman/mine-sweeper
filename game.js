@@ -1,8 +1,4 @@
 'use strict'
-//add powerups ui
-//add hints
-// change wining condition
-
 
 const BOMB = '💣'
 const FLAG = '🚩'
@@ -10,9 +6,10 @@ const FLAG = '🚩'
 var timeInterval
 var gGame = {
     isOn: true,
+    noClicks: true,
     shownCount: +0,
     markedCount: +0,
-    secsPassed: +0,
+    seconds: +0,
     hearts: +0,
     hints: +0,
     powerUp: "none",
@@ -31,11 +28,10 @@ function initGame() {
     document.querySelector('.powerUpContainer').innerText = ''
     document.querySelector('button').innerText = '😁'
     gBoard = buildBoard()
-    renderDummyBoard()
-    gGame.seconds = 0
+    renderBoard(gBoard)
     gGame.markedCount = gLvls[gIdx].numberOfBombs
     document.querySelector('.score').innerHTML = `🚩 ${gGame.markedCount}`
-    _resetPower()
+    plenishPower()
 
 }
 
@@ -60,7 +56,9 @@ function _revealBombs() {
 
 function restart() {
     bombsArray = []
+    gGame.seconds = +0
     gGame.shownCount = 0
+    gGame.noClicks = true
     clearInterval(timeInterval)
     document.querySelector('.timer').innerHTML = '0:00'
     initGame()
@@ -69,7 +67,6 @@ function restart() {
 function win() {
     clearInterval(timeInterval)
     gGame.isOn = false
-    //make cool face
     document.querySelector('button').innerText = '😎'
 }
 
@@ -77,9 +74,10 @@ function setDifficulty(idx) {
     gIdx = idx
     restart()
 }
-
+//Power-ups!!**********************************************************************
 function handleBomb() {
     gGame.hearts--
+    //makes player lose even if he didn't select the hearts powerUp
     if (gGame.hearts <= 0) {
         document.querySelector('.powerUpContainer').style.visibility = "hidden"
         gameOver()
@@ -93,10 +91,14 @@ function handleBomb() {
 }
 
 function showPowerUps() {
-    var htmlStr = `  <div class="heartPower" onclick="powerUp('hearts')">💖</div>
-     <div class="noPower" onclick="powerUp('noPower')">⛔</div>`
+    var htmlStr = `<div class="noPower" onclick="powerUp('noPower')">⛔</div>`
+
+    htmlStr += `  <div class="heartPower" onclick="powerUp('hearts')">💖</div>`
+
     htmlStr += ` <div class="hint" onclick="powerUp('hint')">💡</div>`
+
     htmlStr += ` <div class="safeMove" onclick="powerUp('safe')">🦺</div>`
+
     document.querySelector('.powerUps').innerHTML = htmlStr
 }
 
@@ -105,23 +107,21 @@ function powerUp(power) {
     restart()
 }
 
-function _resetPower() {
+function plenishPower() {
     gGame.hearts = 0
     gGame.hints = 0
     gGame.safeMoves = 0
     var elPowerContainer = document.querySelector('.powerUpContainer')
+    elPowerContainer.style.visibility = "visible"
     if (gGame.powerUp === "hearts") {
-        elPowerContainer.style.visibility = "visible"
         elPowerContainer.innerText = "💖💖💖"
         gGame.hearts = 3
     }
     if (gGame.powerUp === "hint") {
-        elPowerContainer.style.visibility = "visible"
         elPowerContainer.innerHTML = `<div onclick="toggleHint()">💡💡💡</div>`
         gGame.hints = 3
     }
     if (gGame.powerUp === "safe") {
-        elPowerContainer.style.visibility = "visible"
         elPowerContainer.innerHTML = `<div onclick="safeMove(event)">🦺🦺🦺</div>`
         gGame.safeMoves = 3
     }
@@ -129,7 +129,6 @@ function _resetPower() {
 }
 
 function toggleHint() {
-    console.log("toggleHint");
     hintOn = !hintOn
 }
 
@@ -145,6 +144,9 @@ function hint(rowIdx, colIdx) {
             renderCell({ i, j }, value)
         }
     }
+    //prevents player from clicking while hint is on
+    gGame.isOn = false
+    //hides hints
     setTimeout(() => {
         for (var x = 0; x < negCells.length; x++) {
             var location = {
@@ -152,6 +154,7 @@ function hint(rowIdx, colIdx) {
                 j: negCells[x].j
             }
             renderCell(location, '')
+            gGame.isOn = true
         }
     }, 3000
     )
@@ -197,3 +200,6 @@ function safeMove(event) {
         `<div onclick="safeMove(event)"> ${htmlStr} </div>`
 
 }
+
+//end od power-ups
+

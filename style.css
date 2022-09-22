@@ -1,7 +1,13 @@
-*{
+/* *{
     background-color: rgb(178, 232, 232);
-    cursor: "🤣";
+    text-align: center;
+} */
+
+body{
+    background-color: rgb(178, 232, 232);
+    text-align: center;
 }
+
 
 table{
     border: 1px solid black;
@@ -35,9 +41,6 @@ table{
     cursor: grab;
   }
 
-/* .bomb{
-    background-color: brown;
-} */
 
 .ui{
     display: flex;
@@ -55,6 +58,6 @@ table{
     outline: none;
 }
 
-/* .powerUps{
-    color: rgb(244, 208, 150);
-} */
+.darkMode{
+    background-color: black;
+}

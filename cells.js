@@ -6,18 +6,24 @@ function firstClick(event, i, j) {
     addBombs(gBoard, i, j)
     renderBoard(gBoard)
     setMinesNegsCount(gBoard)
-    clicked(event, i, j)
     gGame.isOn = true
+    gGame.noClicks = false
+    clicked(event, i, j)
 }
 
 
+
 function clicked(event, i, j) {
+    if (gGame.noClicks) {
+        firstClick(event, i, j)
+        return
+    }
     if (!gGame.isOn) return
     if (hintOn) {
         hint(i, j)
         return
     }
-    if (event === "first" || event.which === 1) {
+    if (event.which === 1) {
         const currentCell = gBoard[i][j]
         if (currentCell.isBomb) {
             renderCell({ i, j }, BOMB)
@@ -59,16 +65,17 @@ function markCell(i, j) {
     renderCell({ i, j }, FLAG)
     gGame.markedCount--;
     document.querySelector('.score').innerHTML = `🚩 ${gGame.markedCount}`
-    if ((gGame.shownCount === gLvls[gIdx].totalCells - gLvls[gIdx].numberOfBombs)
-        && gGame.markedCount === 0) {
-        win()
-    }
+    checkWining()
 }
 
 function showValue(location) {
     gBoard[location.i][location.j].isShown = true
     renderCell(location, gBoard[location.i][location.j].minesAroundCount)
     gGame.shownCount++
+    checkWining()
+}
+
+function checkWining() {
     if ((gGame.shownCount === gLvls[gIdx].totalCells - gLvls[gIdx].numberOfBombs)
         && gGame.markedCount === 0) {
         win()

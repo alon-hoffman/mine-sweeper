@@ -1,7 +1,12 @@
 'use strict'
 window.addEventListener("contextmenu", e => e.preventDefault());
 
+var colorScheme = [
+    { body: "rgb(178, 232, 232)", color: "black", cell: "rgb(240, 248, 255)", emoji: "☀️" },
+    { body: "rgb(34, 3, 103)", color: "rgb(234, 224, 246)", cell: "rgb(147, 91, 247)", emoji: "🌑" }
+]
 
+var isDarkMode = false
 
 
 
@@ -128,27 +133,7 @@ function setMinesNegsCount(board) {
 }
 
 
-// function buildBoard(firstPickedRow, firstPickedCol) {
-//     var cells = _getAllCells()
-//     const SIZE = gLvls[gIdx].totalCells ** 0.5
-//     const board = []
-//     for (var i = 0; i < SIZE; i++) {
-//         board.push([])
 
-//         for (var j = 0; j < SIZE; j++) {
-//             board[i][j] =
-//                 { isBomb: false, minesAroundCount: null, isMarked: false, isShown: false }
-//             if (i !== firstPickedRow && j !== firstPickedCol) {
-//                 var cell = cells.splice(getRandomIntInclusive(0, cells.length - 1), 1)[0]
-//                 if (cell) {
-//                     board[i][j].isBomb = true
-//                     bombsArray.push({ i, j })
-//                 }
-//             }
-//         }
-//     }
-//     return board
-// }
 
 function getClassName(location) {
     var cellClass = 'cell-' + location.i + '-' + location.j
@@ -156,20 +141,15 @@ function getClassName(location) {
 }
 
 
-function renderDummyBoard() {
-    var elBoard = document.querySelector('.board')
-    var strHTML = ''
-
-    for (var i = 0; i < gLvls[gIdx].totalCells ** 0.5; i++) {
-        strHTML += '<tr>\n'
-        for (var j = 0; j < gLvls[gIdx].totalCells ** 0.5; j++) {
-            var cellClass = getClassName({ i, j })
-            strHTML +=
-                `\t<td class="cell ${cellClass}" onmousedown="firstClick(event,${i}, ${j})">`
-            // `\t<td class="cell ${cellClass}" onmousedown="firstClick(event,'${cellClass}',${i}, ${j})">`
-            strHTML += '\t</td>\n'
-        }
-        strHTML += '</tr>\n'
+function toggleLightMode(element) {
+    isDarkMode = !isDarkMode
+    var index = isDarkMode * 1
+    console.log(colorScheme[isDarkMode * 1].emoji);
+    element.innerText = colorScheme[index].emoji
+    document.querySelector('body').style.backgroundColor = colorScheme[index].body
+    document.querySelector('body').style.color = colorScheme[index].color
+    var elCells = document.querySelectorAll('.cell')
+    for (let i = 0; i < elCells.length; i++) {
+        elCells[i].style.backgroundColor = colorScheme[index].cell
     }
-    elBoard.innerHTML = strHTML
 }
