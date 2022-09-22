@@ -1,0 +1,60 @@
+*{
+    background-color: rgb(178, 232, 232);
+    cursor: "🤣";
+}
+
+table{
+    border: 1px solid black;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: rgb(244, 208, 150);
+}
+
+.powerUpContainer{
+    width: 250px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    font-size: 40px;
+}
+
+.cell {
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    font-size: 1.5em;
+    background-color: aliceblue;
+    border: 1px solid black;
+  }
+
+  .cell:hover{
+    background-color: rgb(190, 220, 246);
+    cursor: pointer;
+  }
+  .cell:active{
+    cursor: grab;
+  }
+
+/* .bomb{
+    background-color: brown;
+} */
+
+.ui{
+    display: flex;
+    /* height: 150px;   */
+    width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+    align-items: center;
+    justify-content: space-around
+}
+
+.ui button{
+    font-size: 60px;
+    border-radius: 10%;
+    outline: none;
+}
+
+/* .powerUps{
+    color: rgb(244, 208, 150);
+} */
