@@ -3,7 +3,7 @@ window.addEventListener("contextmenu", e => e.preventDefault());
 
 var colorScheme = [
     { body: "rgb(178, 232, 232)", color: "black", cell: "rgb(240, 248, 255)", emoji: "☀️" },
-    { body: "rgb(34, 3, 103)", color: "rgb(234, 224, 246)", cell: "rgb(147, 91, 247)", emoji: "🌑" }
+    { body: "black", color: "rgb(234, 224, 246)", cell: "rgb(147, 91, 247)", emoji: "🌑" }
 ]
 
 var isDarkMode = false
@@ -70,6 +70,7 @@ function renderBoard(board) {
         strHTML += '</tr>\n'
     }
     elBoard.innerHTML = strHTML
+    _adjustCellColorCells()
 }
 
 
