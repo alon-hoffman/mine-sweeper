@@ -61,3 +61,12 @@ table{
 .timer{
     width: 50px
 }
+
+.powerUp{
+transition: 0.3 ease-in;
+}
+
+.powerUp:hover{
+    transform: scale(1.3);
+    cursor: pointer;
+}

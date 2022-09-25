@@ -1,5 +1,9 @@
 'use strict'
 
+//mega hint
+//exterminator
+//change marked count
+//change neiger show
 const BOMB = '💣'
 const FLAG = '🚩'
 
@@ -12,6 +16,8 @@ var gGame = {
     seconds: +0,
     hearts: +0,
     hints: +0,
+    boom7: false,
+    canExterminate: false,
     powerUp: "none",
 }
 var gLvls = [
@@ -91,13 +97,17 @@ function handleBomb() {
 }
 
 function showPowerUps() {
-    var htmlStr = `<div class="noPower" onclick="powerUp('noPower')">⛔</div>`
+    var htmlStr = `<div class="powerUp" onclick="powerUp('noPower')">⛔</div>`
 
-    htmlStr += `  <div class="heartPower" onclick="powerUp('hearts')">💖</div>`
+    htmlStr += `  <div class="powerUp" onclick="powerUp('hearts')">💖</div>`
 
-    htmlStr += ` <div class="hint" onclick="powerUp('hint')">💡</div>`
+    htmlStr += ` <div class="powerUp" onclick="powerUp('hint')">💡</div>`
 
-    htmlStr += ` <div class="safeMove" onclick="powerUp('safe')">🦺</div>`
+    htmlStr += ` <div class="powerUp" onclick="powerUp('safe')">🦺</div>`
+
+    htmlStr += ` <div class="powerUp" onclick="powerUp('7Boom')">7️⃣</div>`
+
+    htmlStr += ` <div class="powerUp" onclick="powerUp('exterminator')">🐕</div>`
 
     document.querySelector('.powerUps').innerHTML = htmlStr
 }
@@ -111,6 +121,8 @@ function plenishPower() {
     gGame.hearts = 0
     gGame.hints = 0
     gGame.safeMoves = 0
+    gGame.boom7 = false
+    gGame.canExterminate = false
     var elPowerContainer = document.querySelector('.powerUpContainer')
     elPowerContainer.style.visibility = "visible"
     if (gGame.powerUp === "hearts") {
@@ -125,7 +137,14 @@ function plenishPower() {
         elPowerContainer.innerHTML = `<div onclick="safeMove(event)">🦺🦺🦺</div>`
         gGame.safeMoves = 3
     }
-
+    if (gGame.powerUp === "7Boom") {
+        gGame.boom7 = true
+        elPowerContainer.innerHTML = `<div>7️⃣💥</div>`
+    }
+    if (gGame.powerUp === "exterminator") {
+        elPowerContainer.innerHTML = `<div onclick="exterminator()">🐕</div>`
+        gGame.canExterminate = true
+    }
 }
 
 function toggleHint() {
@@ -199,6 +218,32 @@ function safeMove(event) {
     document.querySelector('.powerUpContainer').innerHTML =
         `<div onclick="safeMove(event)"> ${htmlStr} </div>`
 
+}
+
+function exterminator() {
+    if (!gGame.canExterminate) return
+    var min = (3 < gLvls[gIdx].numberOfBombs) ? 3 : gLvls[gIdx].numberOfBombs
+
+    for (let i = 0; i < min; i++) {
+        var randomBomb = bombsArray.splice(getRandomIntInclusive(0, bombsArray.length - 1), 1)[0]
+        console.log("hello");
+        // console.log("hello", gBoard[randomBomb.i][randomBomb.j]);
+        gBoard[randomBomb.i][randomBomb.j].isBomb = false
+        gGame.markedCount--;
+        gGame.shownCount--
+    }
+    document.querySelector('.score').innerHTML = `🚩 ${gGame.markedCount}`
+
+    //update game
+    setMinesNegsCount(gBoard)
+
+    const SIZE = gLvls[gIdx].totalCells ** 0.5
+    for (var i = 0; i < SIZE; i++) {
+        for (var j = 0; j < SIZE; j++) {
+            if (gBoard[i][j].isShown) renderCell({ i, j }, gBoard[i][j].minesAroundCount)
+        }
+    }
+    gGame.canExterminate = false
 }
 
 //end od power-ups

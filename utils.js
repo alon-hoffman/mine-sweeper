@@ -2,8 +2,8 @@
 window.addEventListener("contextmenu", e => e.preventDefault());
 
 var colorScheme = [
-    { body: "rgb(178, 232, 232)", color: "black", cell: "rgb(240, 248, 255)", emoji: "☀️" },
-    { body: "black", color: "rgb(234, 224, 246)", cell: "rgb(147, 91, 247)", emoji: "🌑" }
+    { body: "rgb(178, 232, 232)", color: "black", cell: "rgb(240, 248, 255)", emoji: "🌑" },
+    { body: "black", color: "rgb(234, 224, 246)", cell: "rgb(147, 91, 247)", emoji: "☀️" }
 ]
 
 var isDarkMode = false
@@ -27,6 +27,10 @@ function buildBoard() {
 }
 
 function addBombs(board, firstPickedRow, firstPickedCol) {
+    if (gGame.boom7) {
+        _7Boom(board)
+        return
+    }
     var potentialBombLocations = []
     const SIZE = gLvls[gIdx].totalCells ** 0.5
     for (var i = 0; i < SIZE; i++) {
@@ -41,7 +45,6 @@ function addBombs(board, firstPickedRow, firstPickedCol) {
         board[randomPos.i][randomPos.j].isBomb = true
         bombsArray.push(randomPos)
     }
-
     return board
 }
 
@@ -57,14 +60,8 @@ function renderBoard(board) {
             var currCell = board[i][j]
 
             var cellClass = getClassName({ i, j })
-
-            if (currCell.isBomb) cellClass += ' bomb'
-            ///XXX
             strHTML +=
                 `\t<td class="cell ${cellClass}" onmousedown="clicked(event,${i}, ${j})">`
-            // `\t<td class="cell ${cellClass}" onmousedown="clicked(event,'${cellClass}',${i}, ${j})">`
-            // `\t<td class="cell ${cellClass}" onclick="clicked(event,'${cellClass}',${i}, ${j})">`
-
             strHTML += '\t</td>\n'
         }
         strHTML += '</tr>\n'
@@ -158,4 +155,20 @@ function _adjustCellColorCells() {
     for (let i = 0; i < elCells.length; i++) {
         elCells[i].style.backgroundColor = colorScheme[index].cell
     }
+}
+
+function _7Boom(board) {
+    const SIZE = gLvls[gIdx].totalCells ** 0.5
+    var counter = 0
+    for (var i = 0; i < SIZE; i++) {
+        for (var j = 0; j < SIZE; j++) {
+            counter++
+            if (counter % 7 === 0 || counter % 10 === 7) {
+                console.log("boom", counter);
+                board[i][j].isBomb = true
+                bombsArray.push({ i, j })
+            }
+        }
+    }
+    return board
 }
