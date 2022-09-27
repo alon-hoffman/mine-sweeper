@@ -206,7 +206,10 @@ function safeMove(event) {
     var randomPos =
         safeMoves.
             splice(getRandomIntInclusive(0, safeMoves.length - 1), 1)[0];
-    clicked(event, randomPos.i, randomPos.j)
+    //clicked(event, randomPos.i, randomPos.j)
+    _CellColor(randomPos, "red")
+    var index = isDarkMode * 1
+    setTimeout(() => { _CellColor(randomPos, colorScheme[index].cell) }, 2000)
     gGame.safeMoves--
 
 
@@ -244,6 +247,7 @@ function exterminator() {
         }
     }
     gGame.canExterminate = false
+    document.querySelector('.powerUpContainer').style.visibility = "hidden"
 }
 
 //end od power-ups

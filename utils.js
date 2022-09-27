@@ -172,3 +172,9 @@ function _7Boom(board) {
     }
     return board
 }
+
+function _CellColor(location, color) {
+    // Select the elCell and set the value
+    const elCell = document.querySelector(`.cell-${location.i}-${location.j}`)
+    elCell.style.backgroundColor = color
+}

@@ -1,6 +1,6 @@
 'use strict'
 
-var shownCells = []
+
 
 
 function firstClick(event, i, j) {
@@ -72,7 +72,6 @@ function markCell(i, j) {
 function showValue(location) {
     gBoard[location.i][location.j].isShown = true
     renderCell(location, gBoard[location.i][location.j].minesAroundCount)
-    if (true) shownCells.push(location)
     gGame.shownCount++
     checkWining()
 }
